@@ -3,7 +3,7 @@ import type { Metadata } from 'next'
 import type { ReactNode } from 'react'
 import Header from '../components/Header'
 import Footer from '../components/Footer'
-import { getPublicSettings } from '../lib/api'
+import { getPublicSettings, getCategories } from '../lib/api'
 
 type PublicSettings = {
   site_name?: string
@@ -14,14 +14,16 @@ type PublicSettings = {
   twitter_url?: string
 }
 
-export async function generateMetadata (): Promise<Metadata> {
-  let settings: PublicSettings = {}
-  try {
-    settings = await getPublicSettings()
-  } catch {
-    // ব্যাকএন্ড বন্ধ থাকলেও পেজ যেন ক্র্যাশ না করে
-  }
+async function loadShellData () {
+  const [settings, categories] = await Promise.all([
+    getPublicSettings().catch(() => ({})),
+    getCategories().catch(() => [])
+  ])
+  return { settings: settings || {}, categories: categories || [] }
+}
 
+export async function generateMetadata (): Promise<Metadata> {
+  const { settings } = await loadShellData()
   const siteName = settings.site_name || 'Daily News BD'
 
   return {
@@ -35,12 +37,7 @@ export default async function RootLayout ({
 }: {
   children: ReactNode
 }) {
-  let settings: PublicSettings = {}
-  try {
-    settings = await getPublicSettings()
-  } catch {
-    // fallback default ব্যবহার হবে
-  }
+  const { settings, categories } = await loadShellData()
 
   return (
     <html lang='bn'>
@@ -57,7 +54,11 @@ export default async function RootLayout ({
         />
       </head>
       <body>
-        <Header siteName={settings.site_name} tagline={settings.site_tagline} />
+        <Header
+          siteName={settings.site_name}
+          tagline={settings.site_tagline}
+          categories={categories}
+        />
         {children}
         <Footer
           siteName={settings.site_name}

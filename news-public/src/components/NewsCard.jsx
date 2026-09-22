@@ -1,19 +1,16 @@
 import Link from 'next/link'
 import Image from 'next/image'
+import { imageUrl } from '../lib/api'
 
 export default function NewsCard ({ news, size = 'medium' }) {
-  const imageUrl = news.featured_image
-    ? `${process.env.NEXT_PUBLIC_STORAGE_URL}/${news.featured_image}`
-    : '/placeholder-news.jpg'
-
   const href = `/${news.category_slug || 'news'}/${news.slug}`
 
   if (size === 'large') {
     return (
       <Link href={href} className='group block'>
-        <div className='relative aspect-video overflow-hidden rounded'>
+        <div className='relative aspect-video overflow-hidden rounded bg-gray-100'>
           <Image
-            src={imageUrl}
+            src={imageUrl(news.featured_image)}
             alt={news.title}
             fill
             priority
@@ -33,9 +30,9 @@ export default function NewsCard ({ news, size = 'medium' }) {
 
   return (
     <Link href={href} className='group flex gap-3'>
-      <div className='relative h-20 w-28 shrink-0 overflow-hidden rounded'>
+      <div className='relative h-20 w-28 shrink-0 overflow-hidden rounded bg-gray-100'>
         <Image
-          src={imageUrl}
+          src={imageUrl(news.featured_image)}
           alt={news.title}
           fill
           className='object-cover'

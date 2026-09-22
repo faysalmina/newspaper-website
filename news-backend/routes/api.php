@@ -6,12 +6,22 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\NewsController;
+use App\Http\Controllers\Api\PublicNewsController;
 use App\Http\Controllers\Api\SettingController;
 use App\Http\Controllers\Api\TagController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/login', [AuthController::class, 'login']);
-Route::get('/public-settings', [SettingController::class, 'index']); // পাবলিক সাইটের জন্য (Phase 7+)
+Route::get('/public-settings', [SettingController::class, 'index']);
+
+// 🌐 পাবলিক নিউজ API — কোনো লগইন লাগবে না, Next.js এখান থেকে ডেটা নেবে
+Route::prefix('public')->group(function () {
+    Route::get('/news/featured', [PublicNewsController::class, 'featured']);
+    Route::get('/news/category/{slug}', [PublicNewsController::class, 'byCategory']);
+    Route::get('/news/{slug}', [PublicNewsController::class, 'show']);
+    Route::get('/news', [PublicNewsController::class, 'index']);
+    Route::get('/categories', [PublicNewsController::class, 'categories']);
+});
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
