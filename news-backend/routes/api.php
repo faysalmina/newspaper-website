@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Api\AdminController;
+use App\Http\Controllers\Api\ActivityLogController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\NewsController;
@@ -18,6 +20,12 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('news', NewsController::class);
 
     Route::middleware('role:super_admin')->prefix('super-admin')->group(function () {
-        // Phase 5-এ এখানে admin management routes যোগ হবে
+        Route::get('/admins', [AdminController::class, 'index']);
+        Route::post('/admins', [AdminController::class, 'store']);
+        Route::put('/admins/{admin}', [AdminController::class, 'update']);
+        Route::post('/admins/{admin}/toggle-status', [AdminController::class, 'toggleStatus']);
+        Route::delete('/admins/{admin}', [AdminController::class, 'destroy']);
+
+        Route::get('/activity-logs', [ActivityLogController::class, 'index']);
     });
 });

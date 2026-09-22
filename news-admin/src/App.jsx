@@ -6,6 +6,8 @@ import Login from './pages/Login'
 import Dashboard from './pages/Dashboard'
 import NewsList from './pages/NewsList'
 import NewsForm from './pages/NewsForm'
+import AdminManagement from './pages/super-admin/AdminManagement'
+import ActivityLog from './pages/super-admin/ActivityLog'
 
 function App () {
   return (
@@ -22,7 +24,11 @@ function App () {
               <Route path='/news/:id/edit' element={<NewsForm />} />
 
               <Route element={<ProtectedRoute requireSuperAdmin />}>
-                {/* Phase 5: /super-admin/* routes */}
+                <Route
+                  path='/super-admin/admins'
+                  element={<AdminManagement />}
+                />
+                <Route path='/super-admin/activity' element={<ActivityLog />} />
               </Route>
             </Route>
           </Route>
