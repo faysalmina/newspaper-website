@@ -8,6 +8,8 @@ import NewsList from './pages/NewsList'
 import NewsForm from './pages/NewsForm'
 import AdminManagement from './pages/super-admin/AdminManagement'
 import ActivityLog from './pages/super-admin/ActivityLog'
+import CategoryManagement from './pages/super-admin/CategoryManagement'
+import SiteSettings from './pages/super-admin/SiteSettings'
 
 function App () {
   return (
@@ -29,6 +31,14 @@ function App () {
                   element={<AdminManagement />}
                 />
                 <Route path='/super-admin/activity' element={<ActivityLog />} />
+                <Route
+                  path='/super-admin/categories'
+                  element={<CategoryManagement />}
+                />
+                <Route
+                  path='/super-admin/settings'
+                  element={<SiteSettings />}
+                />
               </Route>
             </Route>
           </Route>

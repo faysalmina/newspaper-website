@@ -39,6 +39,7 @@ export default function AdminLayout () {
                 সুপার অ্যাডমিন
               </p>
               {menuItem('/super-admin/admins', 'অ্যাডমিন ম্যানেজমেন্ট')}
+              {menuItem('/super-admin/categories', 'ক্যাটাগরি ম্যানেজমেন্ট')}
               {menuItem('/super-admin/activity', 'অ্যাক্টিভিটি লগ')}
               {menuItem('/super-admin/settings', 'সাইট সেটিংস')}
             </>

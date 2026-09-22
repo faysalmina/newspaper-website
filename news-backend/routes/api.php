@@ -4,15 +4,19 @@ use App\Http\Controllers\Api\AdminController;
 use App\Http\Controllers\Api\ActivityLogController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\NewsController;
+use App\Http\Controllers\Api\SettingController;
 use App\Http\Controllers\Api\TagController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/login', [AuthController::class, 'login']);
+Route::get('/public-settings', [SettingController::class, 'index']); // পাবলিক সাইটের জন্য (Phase 7+)
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('/logout', [AuthController::class, 'logout']);
     Route::get('/me', [AuthController::class, 'me']);
+    Route::get('/dashboard/stats', [DashboardController::class, 'stats']);
 
     Route::get('/categories', [CategoryController::class, 'index']);
     Route::get('/tags', [TagController::class, 'index']);
@@ -27,5 +31,12 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::delete('/admins/{admin}', [AdminController::class, 'destroy']);
 
         Route::get('/activity-logs', [ActivityLogController::class, 'index']);
+
+        Route::post('/categories', [CategoryController::class, 'store']);
+        Route::put('/categories/{category}', [CategoryController::class, 'update']);
+        Route::delete('/categories/{category}', [CategoryController::class, 'destroy']);
+
+        Route::get('/settings', [SettingController::class, 'index']);
+        Route::put('/settings', [SettingController::class, 'update']);
     });
 });
