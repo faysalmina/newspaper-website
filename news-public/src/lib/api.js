@@ -36,3 +36,5 @@ export function formatDate (dateStr) {
     day: 'numeric'
   })
 }
+export const getSitemapData = () => fetchAPI('/public/news/sitemap-data')
+export const getFeedNews = () => fetchAPI('/public/news/feed')

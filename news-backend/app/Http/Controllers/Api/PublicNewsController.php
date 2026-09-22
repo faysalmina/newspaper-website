@@ -122,6 +122,38 @@ class PublicNewsController extends Controller
             Category::where('is_active', true)->orderBy('order')->get(['id', 'name', 'slug'])
         );
     }
+        // Sitemap বানানোর জন্য — সব প্রকাশিত নিউজের হালকা তথ্য (title/content ছাড়া, দ্রুত লোডের জন্য)
+    public function sitemapData()
+    {
+        $news = News::where('status', 'published')
+            ->select('slug', 'category_id', 'updated_at')
+            ->with('category:id,slug')
+            ->orderByDesc('updated_at')
+            ->get()
+            ->map(fn($n) => [
+                'slug' => $n->slug,
+                'category_slug' => $n->category?->slug,
+                'updated_at' => $n->updated_at,
+            ]);
+
+        $categories = Category::where('is_active', true)
+            ->select('slug', 'updated_at')
+            ->get();
+
+        return response()->json(['news' => $news, 'categories' => $categories]);
+    }
+
+    // RSS Feed-এর জন্য — সাম্প্রতিক ৫০টা নিউজ
+    public function feed()
+    {
+        $news = News::with(['category', 'author'])
+            ->where('status', 'published')
+            ->latest('published_at')
+            ->limit(50)
+            ->get();
+
+        return response()->json($news->map(fn($n) => $this->transform($n)));
+    }
 
     private function transform(News $news, bool $full = false): array
     {

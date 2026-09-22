@@ -17,6 +17,8 @@ Route::get('/public-settings', [SettingController::class, 'index']);
 // 🌐 পাবলিক নিউজ API — কোনো লগইন লাগবে না, Next.js এখান থেকে ডেটা নেবে
 Route::prefix('public')->group(function () {
     Route::get('/news/featured', [PublicNewsController::class, 'featured']);
+    Route::get('/news/feed', [PublicNewsController::class, 'feed']);
+    Route::get('/news/sitemap-data', [PublicNewsController::class, 'sitemapData']);
     Route::get('/news/category/{slug}', [PublicNewsController::class, 'byCategory']);
     Route::get('/news/{slug}', [PublicNewsController::class, 'show']);
     Route::get('/news', [PublicNewsController::class, 'index']);
