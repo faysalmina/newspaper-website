@@ -92,6 +92,33 @@ class AdminController extends Controller
 
         return response()->json(['message' => 'Admin ডিলিট করা হয়েছে']);
     }
+        // 🔑 Super Admin এক ক্লিকে যেকোনো Admin-এর পাসওয়ার্ড রিসেট করতে পারবেন — পুরনো পাসওয়ার্ড জানার দরকার নেই
+    public function resetPassword(Request $request, User $admin)
+    {
+        $this->ensureIsAdmin($admin);
+
+        $data = $request->validate([
+            'password' => ['nullable', 'string', 'min:8'],
+        ]);
+
+        // পাসওয়ার্ড না দিলে একটা র‍্যান্ডম শক্তিশালী পাসওয়ার্ড অটো-জেনারেট হবে
+        $newPassword = $data['password'] ?? \Illuminate\Support\Str::random(10);
+
+        $admin->update(['password' => Hash::make($newPassword)]);
+        $admin->tokens()->delete(); // সব ডিভাইস থেকে লগআউট — নিরাপত্তার জন্য
+
+        ActivityLog::record(
+            $request->user(),
+            'admin_password_reset',
+            $admin,
+            "{$request->user()->name} — {$admin->name} এর পাসওয়ার্ড রিসেট করেছেন"
+        );
+
+        return response()->json([
+            'message' => 'পাসওয়ার্ড রিসেট হয়েছে',
+            'new_password' => $newPassword, // শুধু একবারই দেখানো হবে — সেভ করে রাখা হবে না
+        ]);
+    }
 
     private function ensureIsAdmin(User $admin): void
     {

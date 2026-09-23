@@ -5,6 +5,7 @@ import { useAuth } from '../context/AuthContext'
 export default function Login () {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const { login } = useAuth()
@@ -50,23 +51,46 @@ export default function Login () {
             <input
               type='email'
               required
+              autoComplete='username'
               value={email}
               onChange={e => setEmail(e.target.value)}
               className='w-full rounded border border-gray-300 px-3 py-2 focus:border-brand focus:outline-none'
             />
           </div>
+
           <div>
             <label className='mb-1 block text-sm text-gray-700'>
               পাসওয়ার্ড
             </label>
-            <input
-              type='password'
-              required
-              value={password}
-              onChange={e => setPassword(e.target.value)}
-              className='w-full rounded border border-gray-300 px-3 py-2 focus:border-brand focus:outline-none'
-            />
+            <div className='relative'>
+              <input
+                type={showPassword ? 'text' : 'password'}
+                required
+                autoComplete='current-password'
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+                className='w-full rounded border border-gray-300 px-3 py-2 pr-10 focus:border-brand focus:outline-none'
+              />
+              <button
+                type='button'
+                onClick={() => setShowPassword(s => !s)}
+                className='absolute right-2 top-1/2 -translate-y-1/2 text-xs text-gray-500 hover:text-gray-700'
+                tabIndex={-1}
+              >
+                {showPassword ? 'লুকান' : 'দেখুন'}
+              </button>
+            </div>
           </div>
+
+          <div className='text-right'>
+            <a
+              href='/forgot-password'
+              className='text-xs text-blue-600 hover:underline'
+            >
+              পাসওয়ার্ড ভুলে গেছেন?
+            </a>
+          </div>
+
           <button
             type='submit'
             disabled={loading}

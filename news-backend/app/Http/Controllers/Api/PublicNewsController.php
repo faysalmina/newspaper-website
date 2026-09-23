@@ -122,6 +122,32 @@ class PublicNewsController extends Controller
             Category::where('is_active', true)->orderBy('order')->get(['id', 'name', 'slug'])
         );
     }
+
+        // হোমপেজের জন্য — প্রতিটা ক্যাটাগরির সর্বশেষ ৪টা নিউজ (daily-bangladesh স্টাইল সেকশন)
+    public function homeSections()
+    {
+        $categories = Category::where('is_active', true)->orderBy('order')->get();
+
+        $sections = $categories->map(function ($cat) {
+            $news = News::with('category')
+                ->where('status', 'published')
+                ->where('category_id', $cat->id)
+                ->latest('published_at')
+                ->limit(4)
+                ->get();
+
+            if ($news->isEmpty()) {
+                return null;
+            }
+
+            return [
+                'category' => ['name' => $cat->name, 'slug' => $cat->slug],
+                'news' => $news->map(fn($n) => $this->transform($n)),
+            ];
+        })->filter()->values();
+
+        return response()->json($sections);
+    }
         // Sitemap বানানোর জন্য — সব প্রকাশিত নিউজের হালকা তথ্য (title/content ছাড়া, দ্রুত লোডের জন্য)
     public function sitemapData()
     {

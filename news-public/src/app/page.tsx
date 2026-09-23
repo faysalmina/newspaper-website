@@ -1,18 +1,18 @@
 import Link from 'next/link'
 import BreakingTicker from '../components/BreakingTicker'
 import NewsCard from '../components/NewsCard'
-import { getHomeFeed } from '../lib/api'
+import { getHomeFeed, getHomeSections } from '../lib/api'
 
 export default async function HomePage () {
-  const feed = await getHomeFeed().catch(() => null)
+  const [feed, sections] = await Promise.all([
+    getHomeFeed().catch(() => null),
+    getHomeSections().catch(() => [])
+  ])
 
   if (!feed || !feed.featured) {
     return (
       <main className='container-main py-16 text-center'>
         <p className='text-lg text-gray-500'>এখনো কোনো নিউজ প্রকাশিত হয়নি।</p>
-        <p className='mt-2 text-sm text-gray-400'>
-          অ্যাডমিন প্যানেল থেকে নিউজ পোস্ট করুন — এখানে অটোমেটিক দেখা যাবে।
-        </p>
       </main>
     )
   }
@@ -22,32 +22,17 @@ export default async function HomePage () {
       <BreakingTicker items={feed.breaking || []} />
 
       <div className='container-main py-8'>
+        {/* উপরের অংশ — ফিচার্ড নিউজ + সর্বাধিক পঠিত সাইডবার */}
         <div className='grid grid-cols-1 gap-8 lg:grid-cols-3'>
           <div className='lg:col-span-2'>
             <NewsCard news={feed.featured} size='large' />
-
-            <div className='mt-8 mb-4 flex items-center justify-between border-b-2 border-brand pb-2'>
-              <h2 className='text-lg font-bold'>সর্বশেষ সংবাদ</h2>
-              <Link
-                href='/latest'
-                className='text-xs text-gray-500 hover:text-brand'
-              >
-                সব দেখুন →
-              </Link>
-            </div>
-            <div className='grid grid-cols-1 gap-5 sm:grid-cols-2'>
-              {feed.latest.map((n: any) => (
-                <NewsCard key={n.id} news={n} />
-              ))}
-            </div>
           </div>
-
-          <aside>
+          <aside className='rounded-lg border bg-white p-4'>
             <h2 className='mb-4 border-b-2 border-brand pb-2 text-lg font-bold'>
               সর্বাধিক পঠিত
             </h2>
             <div className='space-y-4'>
-              {feed.most_read.map((n: any, i: number) => (
+              {(feed.most_read || []).map((n: any, i: number) => (
                 <Link
                   key={n.id}
                   href={`/${n.category_slug}/${n.slug}`}
@@ -56,7 +41,7 @@ export default async function HomePage () {
                   <span className='text-2xl font-bold text-gray-300'>
                     {i + 1}
                   </span>
-                  <h3 className='text-sm font-semibold leading-snug group-hover:text-brand'>
+                  <h3 className='text-sm font-semibold leading-snug group-hover:text-brand line-clamp-2'>
                     {n.title}
                   </h3>
                 </Link>
@@ -64,6 +49,26 @@ export default async function HomePage () {
             </div>
           </aside>
         </div>
+
+        {/* প্রতিটা ক্যাটাগরির জন্য আলাদা সেকশন — daily-bangladesh স্টাইল */}
+        {sections.map((section: any) => (
+          <section key={section.category.slug} className='mt-10'>
+            <div className='mb-4 flex items-center justify-between border-b-2 border-brand pb-2'>
+              <h2 className='text-xl font-bold'>{section.category.name}</h2>
+              <Link
+                href={`/category/${section.category.slug}`}
+                className='text-sm text-gray-500 hover:text-brand'
+              >
+                সব দেখুন →
+              </Link>
+            </div>
+            <div className='grid grid-cols-2 gap-5 sm:grid-cols-3 lg:grid-cols-4'>
+              {section.news.map((n: any) => (
+                <NewsCard key={n.id} news={n} />
+              ))}
+            </div>
+          </section>
+        ))}
       </div>
     </main>
   )

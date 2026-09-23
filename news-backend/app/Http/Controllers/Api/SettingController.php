@@ -10,8 +10,8 @@ use Illuminate\Http\Request;
 class SettingController extends Controller
 {
     private array $defaultKeys = [
-        'site_name', 'site_tagline', 'footer_text',
-        'facebook_url', 'twitter_url', 'youtube_url',
+        'site_name', 'site_tagline', 'footer_text', 'editor_name', 'address',
+        'facebook_url', 'twitter_url', 'youtube_url', 'instagram_url', 'linkedin_url',
         'google_analytics_id', 'contact_email', 'contact_phone',
     ];
 
@@ -19,7 +19,6 @@ class SettingController extends Controller
     {
         $settings = Setting::all()->pluck('value', 'key');
 
-        // ফ্রন্টএন্ডে খালি ফিল্ড দেখানোর জন্য ডিফল্ট কী গুলো নিশ্চিত করি
         $result = [];
         foreach ($this->defaultKeys as $key) {
             $result[$key] = $settings[$key] ?? '';
@@ -34,9 +33,13 @@ class SettingController extends Controller
             'site_name' => ['nullable', 'string', 'max:255'],
             'site_tagline' => ['nullable', 'string', 'max:255'],
             'footer_text' => ['nullable', 'string', 'max:500'],
+            'editor_name' => ['nullable', 'string', 'max:255'],
+            'address' => ['nullable', 'string', 'max:500'],
             'facebook_url' => ['nullable', 'string', 'max:255'],
             'twitter_url' => ['nullable', 'string', 'max:255'],
             'youtube_url' => ['nullable', 'string', 'max:255'],
+            'instagram_url' => ['nullable', 'string', 'max:255'],
+            'linkedin_url' => ['nullable', 'string', 'max:255'],
             'google_analytics_id' => ['nullable', 'string', 'max:50'],
             'contact_email' => ['nullable', 'email', 'max:255'],
             'contact_phone' => ['nullable', 'string', 'max:30'],

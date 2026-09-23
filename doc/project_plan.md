@@ -264,3 +264,20 @@ VPS-এ move করার দিন শুধু এই ৩টা env variable �
 ---
 
 **পরবর্তী পদক্ষেপ:** আপনি এই ডকুমেন্ট রিভিউ করে কনফার্ম করুন (অথবা কোনো ফিচার/টেবিল চেঞ্জ লাগলে বলুন) — কনফার্ম করলেই আমি **Phase 1 (Laravel Setup + Database)** এর ফাইল ও কোড দেওয়া শুরু করব।
+
+নতুন Phase Roadmap
+Phase কাজ
+10 সার্চ পেজ + About/Contact পেজ + Login পেজ UX (পাসওয়ার্ড শো/হাইড)
+11 Forgot Password + Super Admin দিয়ে যেকোনো Admin-এর পাসওয়ার্ড রিসেট
+12 ইমেজ অপ্টিমাইজেশন (Intervention Image — resize/compress/WebP)
+
+14 (এখন) Dark mode সম্পূর্ণ রিমুভ + Search bar visible করা + Nav bar (রঙ/সাইজ) + হোমপেজ রিডিজাইন (ক্যাটাগরি-ভিত্তিক সেকশন) + Footer রিডিজাইন
+15 Video ফিচার (ভিডিও পোস্ট, ভিডিও পেজ, হোমপেজে ভিডিও সেকশন)
+16 Advertisement সিস্টেম (Super Admin থেকে অ্যাড ম্যানেজমেন্ট)
+17 Security Hardening
+
+14 E-paper/PDF ভিউয়ার
+15 কমেন্ট সিস্টেম
+16 Redis Caching
+17 🔒 Security Hardening (সবার শেষে — যাতে নতুন কোনো ফিচারই security hole তৈরি না করে)
+18 Vercel-এ ডিপ্লয়

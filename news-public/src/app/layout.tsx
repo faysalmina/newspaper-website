@@ -9,9 +9,15 @@ type PublicSettings = {
   site_name?: string
   site_tagline?: string
   footer_text?: string
+  editor_name?: string
+  address?: string
+  contact_email?: string
+  contact_phone?: string
   facebook_url?: string
   youtube_url?: string
   twitter_url?: string
+  instagram_url?: string
+  linkedin_url?: string
 }
 
 async function loadShellData () {
@@ -60,11 +66,7 @@ export default async function RootLayout ({
           categories={categories}
         />
         {children}
-        <Footer
-          siteName={settings.site_name}
-          footerText={settings.footer_text}
-          socialLinks={settings}
-        />
+        <Footer settings={settings} />
       </body>
     </html>
   )

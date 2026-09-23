@@ -3,6 +3,8 @@
 @theme {
   --color-brand: #c81e1e;
   --color-brand-dark: #991414;
+  --color-navy: #1e293b;
+  --color-navy-dark: #0f172a;
   --color-ink: #1a1a1a;
   --font-bangla: 'Noto Sans Bengali', sans-serif;
 }
@@ -15,6 +17,7 @@ html,
 body {
   margin: 0;
   font-family: 'Noto Sans Bengali', sans-serif;
+  background-color: #f3f4f6;
   color: var(--color-ink);
 }
 

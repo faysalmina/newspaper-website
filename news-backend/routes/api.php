@@ -6,17 +6,20 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CategoryController;
 use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\NewsController;
+use App\Http\Controllers\Api\PasswordResetController;
 use App\Http\Controllers\Api\PublicNewsController;
 use App\Http\Controllers\Api\SettingController;
 use App\Http\Controllers\Api\TagController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/login', [AuthController::class, 'login']);
+Route::post('/forgot-password', [PasswordResetController::class, 'forgotPassword']);
+Route::post('/reset-password', [PasswordResetController::class, 'resetPassword']);
 Route::get('/public-settings', [SettingController::class, 'index']);
 
-// 🌐 পাবলিক নিউজ API — কোনো লগইন লাগবে না, Next.js এখান থেকে ডেটা নেবে
 Route::prefix('public')->group(function () {
     Route::get('/news/featured', [PublicNewsController::class, 'featured']);
+    Route::get('/news/home-sections', [PublicNewsController::class, 'homeSections']);
     Route::get('/news/feed', [PublicNewsController::class, 'feed']);
     Route::get('/news/sitemap-data', [PublicNewsController::class, 'sitemapData']);
     Route::get('/news/category/{slug}', [PublicNewsController::class, 'byCategory']);
@@ -40,6 +43,7 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/admins', [AdminController::class, 'store']);
         Route::put('/admins/{admin}', [AdminController::class, 'update']);
         Route::post('/admins/{admin}/toggle-status', [AdminController::class, 'toggleStatus']);
+        Route::post('/admins/{admin}/reset-password', [AdminController::class, 'resetPassword']);
         Route::delete('/admins/{admin}', [AdminController::class, 'destroy']);
 
         Route::get('/activity-logs', [ActivityLogController::class, 'index']);

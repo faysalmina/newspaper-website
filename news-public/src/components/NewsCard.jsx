@@ -8,7 +8,7 @@ export default function NewsCard ({ news, size = 'medium' }) {
   if (size === 'large') {
     return (
       <Link href={href} className='group block'>
-        <div className='relative aspect-video overflow-hidden rounded bg-gray-100'>
+        <div className='relative aspect-video overflow-hidden rounded-lg bg-gray-100'>
           <Image
             src={imageUrl(news.featured_image)}
             alt={news.title}
@@ -29,22 +29,24 @@ export default function NewsCard ({ news, size = 'medium' }) {
   }
 
   return (
-    <Link href={href} className='group flex gap-3'>
-      <div className='relative h-20 w-28 shrink-0 overflow-hidden rounded bg-gray-100'>
+    <Link href={href} className='group block'>
+      <div className='relative aspect-video overflow-hidden rounded bg-gray-100'>
         <Image
           src={imageUrl(news.featured_image)}
           alt={news.title}
           fill
-          className='object-cover'
+          className='object-cover transition group-hover:scale-105'
           unoptimized
         />
       </div>
-      <div>
-        <h3 className='text-sm font-semibold leading-snug group-hover:text-brand'>
-          {news.title}
-        </h3>
-        <p className='mt-1 text-xs text-gray-400'>{news.category_name}</p>
-      </div>
+      <h3 className='mt-2 text-sm font-semibold leading-snug group-hover:text-brand line-clamp-2'>
+        {news.title}
+      </h3>
+      {news.excerpt && (
+        <p className='mt-1 text-xs text-gray-500 line-clamp-2'>
+          {news.excerpt}
+        </p>
+      )}
     </Link>
   )
 }

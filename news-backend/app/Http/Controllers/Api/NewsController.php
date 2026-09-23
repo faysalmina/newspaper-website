@@ -9,8 +9,8 @@ use App\Http\Requests\UpdateNewsRequest;
 use App\Models\ActivityLog;
 use App\Models\News;
 use App\Models\Tag;
+use App\Services\ImageUploadService;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Storage;
 
 class NewsController extends Controller
 {
@@ -43,7 +43,7 @@ class NewsController extends Controller
         }
 
         if ($request->hasFile('featured_image')) {
-            $data['featured_image'] = $request->file('featured_image')->store('news', 'public');
+            $data['featured_image'] = ImageUploadService::processAndStore($request->file('featured_image'));
         }
 
         $tags = $data['tags'] ?? [];
@@ -69,7 +69,6 @@ class NewsController extends Controller
 
     public function update(UpdateNewsRequest $request, News $news)
     {
-        // 🔑 এখানেই "নিজেরটা ছাড়া এডিট করা যাবে না" রুলটা enforce হয়
         $this->authorize('update', $news);
 
         $data = $request->validated();
@@ -79,10 +78,8 @@ class NewsController extends Controller
         }
 
         if ($request->hasFile('featured_image')) {
-            if ($news->featured_image) {
-                Storage::disk('public')->delete($news->featured_image);
-            }
-            $data['featured_image'] = $request->file('featured_image')->store('news', 'public');
+            ImageUploadService::delete($news->featured_image);
+            $data['featured_image'] = ImageUploadService::processAndStore($request->file('featured_image'));
         }
 
         if ((($data['status'] ?? $news->status) === 'published') && !$news->published_at) {
@@ -105,12 +102,9 @@ class NewsController extends Controller
 
     public function destroy(Request $request, News $news)
     {
-        // 🔑 নিজেরটা ছাড়া ডিলিট করা যাবে না — এটাও Policy-তেই enforce
         $this->authorize('delete', $news);
 
-        if ($news->featured_image) {
-            Storage::disk('public')->delete($news->featured_image);
-        }
+        ImageUploadService::delete($news->featured_image);
 
         $title = $news->title;
         $news->delete();

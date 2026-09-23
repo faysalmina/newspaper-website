@@ -6,6 +6,7 @@ import {
   toggleAdminStatus,
   deleteAdmin
 } from '../../api/admin'
+import { resetAdminPassword } from '../../api/auth'
 
 export default function AdminManagement () {
   const [admins, setAdmins] = useState([])
@@ -20,6 +21,7 @@ export default function AdminManagement () {
   })
   const [error, setError] = useState('')
   const [saving, setSaving] = useState(false)
+  const [resetResult, setResetResult] = useState(null) // { adminName, password }
 
   const load = () => {
     setLoading(true)
@@ -94,6 +96,18 @@ export default function AdminManagement () {
     load()
   }
 
+  // 🔑 এটাই নতুন — পুরনো পাসওয়ার্ড না জেনেই রিসেট
+  const handleResetPassword = async admin => {
+    if (
+      !window.confirm(
+        `"${admin.name}" এর জন্য একটা নতুন র‍্যান্ডম পাসওয়ার্ড জেনারেট করবেন? পুরনো পাসওয়ার্ড আর কাজ করবে না।`
+      )
+    )
+      return
+    const res = await resetAdminPassword(admin.id)
+    setResetResult({ adminName: admin.name, password: res.data.new_password })
+  }
+
   if (loading) return <p className='text-gray-500'>লোড হচ্ছে...</p>
 
   return (
@@ -110,6 +124,30 @@ export default function AdminManagement () {
           + নতুন অ্যাডমিন
         </button>
       </div>
+
+      {/* পাসওয়ার্ড রিসেট রেজাল্ট মোডাল */}
+      {resetResult && (
+        <div className='fixed inset-0 z-50 flex items-center justify-center bg-black/40 px-4'>
+          <div className='w-full max-w-sm rounded-lg bg-white p-6 shadow-lg'>
+            <h3 className='mb-2 font-bold text-green-700'>
+              ✅ পাসওয়ার্ড রিসেট হয়েছে
+            </h3>
+            <p className='mb-3 text-sm text-gray-600'>
+              <strong>{resetResult.adminName}</strong> এর নতুন পাসওয়ার্ড — এটা
+              এখনই কপি করে তাকে নিরাপদে জানান, এটা আর দেখা যাবে না:
+            </p>
+            <div className='mb-4 select-all rounded bg-gray-100 p-3 text-center font-mono text-lg'>
+              {resetResult.password}
+            </div>
+            <button
+              onClick={() => setResetResult(null)}
+              className='w-full rounded bg-brand py-2 text-white hover:bg-brand-dark'
+            >
+              বন্ধ করুন
+            </button>
+          </div>
+        </div>
+      )}
 
       {showForm && (
         <form
@@ -232,6 +270,12 @@ export default function AdminManagement () {
                       className='text-blue-600 hover:underline'
                     >
                       এডিট
+                    </button>
+                    <button
+                      onClick={() => handleResetPassword(admin)}
+                      className='text-purple-600 hover:underline'
+                    >
+                      পাসওয়ার্ড রিসেট
                     </button>
                     <button
                       onClick={() => handleToggle(admin)}

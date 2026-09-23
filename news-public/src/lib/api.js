@@ -1,5 +1,6 @@
 const API_URL = process.env.NEXT_PUBLIC_API_URL
 
+export { fetchAPI }
 async function fetchAPI (endpoint, options = {}) {
   const res = await fetch(`${API_URL}${endpoint}`, {
     ...options,
@@ -14,6 +15,7 @@ async function fetchAPI (endpoint, options = {}) {
   return res.json()
 }
 
+export const getHomeSections = () => fetchAPI('/public/news/home-sections')
 export const getPublicSettings = () => fetchAPI('/public-settings')
 export const getCategories = () => fetchAPI('/public/categories')
 export const getHomeFeed = () => fetchAPI('/public/news/featured')

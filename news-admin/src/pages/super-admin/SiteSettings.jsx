@@ -4,10 +4,14 @@ import { getSettings, updateSettings } from '../../api/setting'
 const fields = [
   { key: 'site_name', label: 'সাইটের নাম' },
   { key: 'site_tagline', label: 'ট্যাগলাইন' },
+  { key: 'editor_name', label: 'সম্পাদকের নাম' },
+  { key: 'address', label: 'অফিসের ঠিকানা', textarea: true },
   { key: 'footer_text', label: 'ফুটার টেক্সট', textarea: true },
   { key: 'facebook_url', label: 'Facebook URL' },
   { key: 'twitter_url', label: 'Twitter/X URL' },
   { key: 'youtube_url', label: 'YouTube URL' },
+  { key: 'instagram_url', label: 'Instagram URL' },
+  { key: 'linkedin_url', label: 'LinkedIn URL' },
   { key: 'google_analytics_id', label: 'Google Analytics ID' },
   { key: 'contact_email', label: 'যোগাযোগ ইমেইল' },
   { key: 'contact_phone', label: 'যোগাযোগ ফোন' }
