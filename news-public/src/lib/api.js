@@ -15,6 +15,23 @@ async function fetchAPI (endpoint, options = {}) {
   return res.json()
 }
 
+export const getNewsComments = slug =>
+  fetchAPI(`/public/news/${encodeURIComponent(slug)}/comments`)
+
+export async function postComment (slug, data) {
+  const API_URL = process.env.NEXT_PUBLIC_API_URL
+  const res = await fetch(
+    `${API_URL}/public/news/${encodeURIComponent(slug)}/comments`,
+    {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(data)
+    }
+  )
+  const json = await res.json()
+  if (!res.ok) throw new Error(json.message || 'কমেন্ট জমা দিতে সমস্যা হয়েছে')
+  return json
+}
 export const getAllEpapers = (page = 1) =>
   fetchAPI(`/public/epapers?page=${page}`)
 export const getLatestEpaper = () => fetchAPI('/public/epapers/latest')

@@ -34,6 +34,7 @@ export default function AdminLayout () {
           {menuItem('/news', 'নিউজ ম্যানেজমেন্ট')}
           {menuItem('/videos', 'ভিডিও ম্যানেজমেন্ট')}
           {menuItem('/epapers', 'ই-পেপার ম্যানেজমেন্ট')}
+          {menuItem('/comments', 'কমেন্ট মডারেশন')}
 
           {isSuperAdmin && (
             <>

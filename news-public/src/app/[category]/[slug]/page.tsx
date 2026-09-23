@@ -6,6 +6,7 @@ import ShareButtons from '../../../components/ShareButtons'
 import NewsCard from '../../../components/NewsCard'
 import { getNewsBySlug, imageUrl, formatDate } from '../../../lib/api'
 import AdSlot from '../../../components/AdSlot'
+import CommentSection from '../../../components/CommentSection'
 
 type Props = { params: Promise<{ category: string; slug: string }> }
 
@@ -132,6 +133,7 @@ export default async function SingleNewsPage ({ params }: Props) {
             </p>
             <ShareButtons url={pageUrl} title={news.title} />
           </div>
+          <CommentSection slug={news.slug} />
         </article>
 
         <aside>

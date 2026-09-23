@@ -42,4 +42,8 @@ class News extends Model
     {
         return $user->isSuperAdmin() || $this->author_id === $user->id;
     }
+        public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
 }

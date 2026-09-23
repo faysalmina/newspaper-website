@@ -5,11 +5,13 @@ use App\Http\Controllers\Api\AdminController;
 use App\Http\Controllers\Api\ActivityLogController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\CategoryController;
+use App\Http\Controllers\Api\CommentController;
 use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\EpaperController;
 use App\Http\Controllers\Api\NewsController;
 use App\Http\Controllers\Api\PasswordResetController;
 use App\Http\Controllers\Api\PublicAdController;
+use App\Http\Controllers\Api\PublicCommentController;
 use App\Http\Controllers\Api\PublicEpaperController;
 use App\Http\Controllers\Api\PublicNewsController;
 use App\Http\Controllers\Api\PublicVideoController;
@@ -29,6 +31,9 @@ Route::prefix('public')->group(function () {
     Route::get('/news/feed', [PublicNewsController::class, 'feed']);
     Route::get('/news/sitemap-data', [PublicNewsController::class, 'sitemapData']);
     Route::get('/news/category/{slug}', [PublicNewsController::class, 'byCategory']);
+    Route::get('/news/{slug}/comments', [PublicCommentController::class, 'index']);
+    Route::post('/news/{slug}/comments', [PublicCommentController::class, 'store'])
+        ->middleware('throttle:5,1'); // ১ মিনিটে সর্বোচ্চ ৫টা কমেন্ট — স্প্যাম প্রতিরোধ
     Route::get('/news/{slug}', [PublicNewsController::class, 'show']);
     Route::get('/news', [PublicNewsController::class, 'index']);
     Route::get('/categories', [PublicNewsController::class, 'categories']);
@@ -60,6 +65,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/epapers', [EpaperController::class, 'index']);
     Route::post('/epapers', [EpaperController::class, 'store']);
     Route::delete('/epapers/{epaper}', [EpaperController::class, 'destroy']);
+
+    Route::get('/comments', [CommentController::class, 'index']);
+    Route::post('/comments/{comment}/approve', [CommentController::class, 'approve']);
+    Route::delete('/comments/{comment}', [CommentController::class, 'destroy']);
 
     Route::middleware('role:super_admin')->prefix('super-admin')->group(function () {
         Route::get('/admins', [AdminController::class, 'index']);
