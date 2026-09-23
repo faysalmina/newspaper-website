@@ -1,7 +1,8 @@
 import Link from 'next/link'
 import SearchBar from './SearchBar'
+import AdSlot from './AdSlot'
 
-export default function Header ({
+export default async function Header ({
   siteName = 'Daily News BD',
   tagline = '',
   categories = []
@@ -42,6 +43,12 @@ export default function Header ({
           >
             ভিডিও
           </Link>
+          <Link
+            href='/epaper'
+            className='whitespace-nowrap px-5 py-3.5 text-base font-semibold text-white hover:bg-white/10'
+          >
+            ই-পেপার
+          </Link>
           {categories.map(cat => (
             <Link
               key={cat.slug}
@@ -56,6 +63,9 @@ export default function Header ({
           <SearchBar mobile />
         </div>
       </nav>
+      <div className='border-b bg-gray-50 py-2'>
+        <AdSlot position='header' />
+      </div>
     </header>
   )
 }

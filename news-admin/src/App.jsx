@@ -14,6 +14,8 @@ import CategoryManagement from './pages/super-admin/CategoryManagement'
 import SiteSettings from './pages/super-admin/SiteSettings'
 import VideoList from './pages/VideoList'
 import VideoForm from './pages/VideoForm'
+import AdManagement from './pages/super-admin/AdManagement'
+import EpaperManagement from './pages/EpaperManagement'
 
 function App () {
   return (
@@ -33,6 +35,8 @@ function App () {
               <Route path='/videos' element={<VideoList />} />
               <Route path='/videos/create' element={<VideoForm />} />
               <Route path='/videos/:id/edit' element={<VideoForm />} />
+              <Route path='/super-admin/ads' element={<AdManagement />} />
+              <Route path='/epapers' element={<EpaperManagement />} />
 
               <Route element={<ProtectedRoute requireSuperAdmin />}>
                 <Route

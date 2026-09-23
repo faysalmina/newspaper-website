@@ -33,6 +33,7 @@ export default function AdminLayout () {
           {menuItem('/', 'ড্যাশবোর্ড')}
           {menuItem('/news', 'নিউজ ম্যানেজমেন্ট')}
           {menuItem('/videos', 'ভিডিও ম্যানেজমেন্ট')}
+          {menuItem('/epapers', 'ই-পেপার ম্যানেজমেন্ট')}
 
           {isSuperAdmin && (
             <>
@@ -42,6 +43,7 @@ export default function AdminLayout () {
               {menuItem('/super-admin/admins', 'অ্যাডমিন ম্যানেজমেন্ট')}
               {menuItem('/super-admin/categories', 'ক্যাটাগরি ম্যানেজমেন্ট')}
               {menuItem('/super-admin/activity', 'অ্যাক্টিভিটি লগ')}
+              {menuItem('/super-admin/ads', 'বিজ্ঞাপন ম্যানেজমেন্ট')}
               {menuItem('/super-admin/settings', 'সাইট সেটিংস')}
             </>
           )}

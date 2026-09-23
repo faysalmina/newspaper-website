@@ -3,6 +3,7 @@ import BreakingTicker from '../components/BreakingTicker'
 import NewsCard from '../components/NewsCard'
 import VideoCard from '../components/VideoCard'
 import { getHomeFeed, getHomeSections, getLatestVideos } from '../lib/api'
+import AdSlot from '../components/AdSlot'
 
 export default async function HomePage () {
   const [feed, sections, videos] = await Promise.all([
@@ -22,7 +23,9 @@ export default async function HomePage () {
   return (
     <main>
       <BreakingTicker items={feed.breaking || []} />
-
+      <div className='container-main pt-4'>
+        <AdSlot position='homepage_top' />
+      </div>
       <div className='container-main py-8'>
         {/* উপরের অংশ — ফিচার্ড নিউজ + সর্বাধিক পঠিত সাইডবার */}
         <div className='grid grid-cols-1 gap-8 lg:grid-cols-3'>
@@ -50,6 +53,9 @@ export default async function HomePage () {
               ))}
             </div>
           </aside>
+          <div className='mt-6'>
+            <AdSlot position='sidebar' />
+          </div>
         </div>
 
         {/* প্রতিটা ক্যাটাগরির জন্য আলাদা সেকশন — daily-bangladesh স্টাইল */}

@@ -1,6 +1,7 @@
 import Link from 'next/link'
+import AdSlot from './AdSlot'
 
-export default function Footer ({ settings = {} }) {
+export default async function Footer ({ settings = {} }) {
   const siteName = settings.site_name || 'Daily News BD'
 
   const socials = [
@@ -13,6 +14,9 @@ export default function Footer ({ settings = {} }) {
 
   return (
     <footer className='mt-10 border-t bg-gray-50'>
+      <div className='border-b py-4'>
+        <AdSlot position='footer' />
+      </div>
       <div className='container-main grid grid-cols-1 gap-8 py-10 md:grid-cols-3'>
         <div>
           <div className='text-2xl font-extrabold text-brand'>{siteName}</div>

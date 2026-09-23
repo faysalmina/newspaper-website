@@ -5,6 +5,7 @@ import { notFound } from 'next/navigation'
 import ShareButtons from '../../../components/ShareButtons'
 import NewsCard from '../../../components/NewsCard'
 import { getNewsBySlug, imageUrl, formatDate } from '../../../lib/api'
+import AdSlot from '../../../components/AdSlot'
 
 type Props = { params: Promise<{ category: string; slug: string }> }
 
@@ -108,6 +109,9 @@ export default async function SingleNewsPage ({ params }: Props) {
             className='prose prose-lg mt-6 max-w-none leading-relaxed'
             dangerouslySetInnerHTML={{ __html: news.content }}
           />
+          <div className='my-6'>
+            <AdSlot position='in_article' />
+          </div>
 
           {news.tags?.length > 0 && (
             <div className='mt-6 flex flex-wrap gap-2'>

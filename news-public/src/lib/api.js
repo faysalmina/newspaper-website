@@ -15,6 +15,9 @@ async function fetchAPI (endpoint, options = {}) {
   return res.json()
 }
 
+export const getAllEpapers = (page = 1) =>
+  fetchAPI(`/public/epapers?page=${page}`)
+export const getLatestEpaper = () => fetchAPI('/public/epapers/latest')
 export const getLatestVideos = () => fetchAPI('/public/videos/latest')
 export const getVideoBySlug = slug =>
   fetchAPI(`/public/videos/${encodeURIComponent(slug)}`)
