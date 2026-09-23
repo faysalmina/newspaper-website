@@ -36,6 +36,12 @@ export default function Header ({
           >
             হোম
           </Link>
+          <Link
+            href='/video'
+            className='whitespace-nowrap px-5 py-3.5 text-base font-semibold text-white hover:bg-white/10'
+          >
+            ভিডিও
+          </Link>
           {categories.map(cat => (
             <Link
               key={cat.slug}

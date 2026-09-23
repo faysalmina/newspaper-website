@@ -1,12 +1,14 @@
 import Link from 'next/link'
 import BreakingTicker from '../components/BreakingTicker'
 import NewsCard from '../components/NewsCard'
-import { getHomeFeed, getHomeSections } from '../lib/api'
+import VideoCard from '../components/VideoCard'
+import { getHomeFeed, getHomeSections, getLatestVideos } from '../lib/api'
 
 export default async function HomePage () {
-  const [feed, sections] = await Promise.all([
+  const [feed, sections, videos] = await Promise.all([
     getHomeFeed().catch(() => null),
-    getHomeSections().catch(() => [])
+    getHomeSections().catch(() => []),
+    getLatestVideos().catch(() => [])
   ])
 
   if (!feed || !feed.featured) {
@@ -69,6 +71,24 @@ export default async function HomePage () {
             </div>
           </section>
         ))}
+        {videos && videos.length > 0 && (
+          <section className='mt-10'>
+            <div className='mb-4 flex items-center justify-between border-b-2 border-brand pb-2'>
+              <h2 className='text-xl font-bold'>ভিডিও</h2>
+              <Link
+                href='/video'
+                className='text-sm text-gray-500 hover:text-brand'
+              >
+                সব দেখুন →
+              </Link>
+            </div>
+            <div className='grid grid-cols-2 gap-5 sm:grid-cols-3 lg:grid-cols-4'>
+              {videos.map((v: any) => (
+                <VideoCard key={v.id} video={v} />
+              ))}
+            </div>
+          </section>
+        )}
       </div>
     </main>
   )

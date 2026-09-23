@@ -12,6 +12,8 @@ import AdminManagement from './pages/super-admin/AdminManagement'
 import ActivityLog from './pages/super-admin/ActivityLog'
 import CategoryManagement from './pages/super-admin/CategoryManagement'
 import SiteSettings from './pages/super-admin/SiteSettings'
+import VideoList from './pages/VideoList'
+import VideoForm from './pages/VideoForm'
 
 function App () {
   return (
@@ -28,6 +30,9 @@ function App () {
               <Route path='/news' element={<NewsList />} />
               <Route path='/news/create' element={<NewsForm />} />
               <Route path='/news/:id/edit' element={<NewsForm />} />
+              <Route path='/videos' element={<VideoList />} />
+              <Route path='/videos/create' element={<VideoForm />} />
+              <Route path='/videos/:id/edit' element={<VideoForm />} />
 
               <Route element={<ProtectedRoute requireSuperAdmin />}>
                 <Route

@@ -15,6 +15,11 @@ async function fetchAPI (endpoint, options = {}) {
   return res.json()
 }
 
+export const getLatestVideos = () => fetchAPI('/public/videos/latest')
+export const getVideoBySlug = slug =>
+  fetchAPI(`/public/videos/${encodeURIComponent(slug)}`)
+export const getAllVideos = (page = 1) =>
+  fetchAPI(`/public/videos?page=${page}`)
 export const getHomeSections = () => fetchAPI('/public/news/home-sections')
 export const getPublicSettings = () => fetchAPI('/public-settings')
 export const getCategories = () => fetchAPI('/public/categories')

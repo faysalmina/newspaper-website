@@ -32,6 +32,7 @@ export default function AdminLayout () {
         <nav className='space-y-1'>
           {menuItem('/', 'ড্যাশবোর্ড')}
           {menuItem('/news', 'নিউজ ম্যানেজমেন্ট')}
+          {menuItem('/videos', 'ভিডিও ম্যানেজমেন্ট')}
 
           {isSuperAdmin && (
             <>

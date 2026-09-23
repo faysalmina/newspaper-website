@@ -8,8 +8,10 @@ use App\Http\Controllers\Api\DashboardController;
 use App\Http\Controllers\Api\NewsController;
 use App\Http\Controllers\Api\PasswordResetController;
 use App\Http\Controllers\Api\PublicNewsController;
+use App\Http\Controllers\Api\PublicVideoController;
 use App\Http\Controllers\Api\SettingController;
 use App\Http\Controllers\Api\TagController;
+use App\Http\Controllers\Api\VideoController;
 use Illuminate\Support\Facades\Route;
 
 Route::post('/login', [AuthController::class, 'login']);
@@ -26,6 +28,10 @@ Route::prefix('public')->group(function () {
     Route::get('/news/{slug}', [PublicNewsController::class, 'show']);
     Route::get('/news', [PublicNewsController::class, 'index']);
     Route::get('/categories', [PublicNewsController::class, 'categories']);
+
+    Route::get('/videos/latest', [PublicVideoController::class, 'latest']);
+    Route::get('/videos/{slug}', [PublicVideoController::class, 'show']);
+    Route::get('/videos', [PublicVideoController::class, 'index']);
 });
 
 Route::middleware('auth:sanctum')->group(function () {
@@ -37,6 +43,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/tags', [TagController::class, 'index']);
 
     Route::apiResource('news', NewsController::class);
+    Route::apiResource('videos', VideoController::class);
 
     Route::middleware('role:super_admin')->prefix('super-admin')->group(function () {
         Route::get('/admins', [AdminController::class, 'index']);
