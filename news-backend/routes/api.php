@@ -20,8 +20,8 @@ use App\Http\Controllers\Api\TagController;
 use App\Http\Controllers\Api\VideoController;
 use Illuminate\Support\Facades\Route;
 
-Route::post('/login', [AuthController::class, 'login']);
-Route::post('/forgot-password', [PasswordResetController::class, 'forgotPassword']);
+Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:6,1'); // ১ মিনিটে সর্বোচ্চ ৬ বার চেষ্টা
+Route::post('/forgot-password', [PasswordResetController::class, 'forgotPassword'])->middleware('throttle:3,1');
 Route::post('/reset-password', [PasswordResetController::class, 'resetPassword']);
 Route::get('/public-settings', [SettingController::class, 'index']);
 

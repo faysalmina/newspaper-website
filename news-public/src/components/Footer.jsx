@@ -74,13 +74,25 @@ export default async function Footer ({ settings = {} }) {
             <a href='/sitemap.xml' className='hover:text-brand'>
               সাইটম্যাপ
             </a>
+            <a
+              href={
+                process.env.NEXT_PUBLIC_ADMIN_URL || 'http://localhost:5173'
+              }
+              target='_blank'
+              rel='noopener noreferrer'
+              className='mt-1 inline-block text-gray-500 hover:text-gray-300'
+            >
+              Admin Login
+            </a>
           </div>
         </div>
       </div>
 
-      <div className='bg-navy-dark py-4 text-center text-xs text-gray-300'>
-        © {new Date().getFullYear()} {siteName} — সর্বস্বত্ব সংরক্ষিত
-        <h5>Developed by MD FAYSAL AHMED BHUIYAN</h5>
+      <div className='bg-navy-dark py-4 text-center text-xs text-gray-400'>
+        <p>
+          © {new Date().getFullYear()} {siteName} — সর্বস্বত্ব সংরক্ষিত
+        </p>
+        <h6>Developed by MD FAYSAL AHMED BHUIYAN</h6>
       </div>
     </footer>
   )

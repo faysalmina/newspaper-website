@@ -37,6 +37,7 @@ class NewsController extends Controller
         $data = $request->validated();
         $data['slug'] = SlugHelper::make($data['title']);
         $data['author_id'] = $request->user()->id;
+        $data['content'] = \App\Services\ContentSanitizer::clean($data['content']);
 
         if ($data['status'] === 'published' && empty($data['published_at'])) {
             $data['published_at'] = now();
@@ -75,6 +76,10 @@ class NewsController extends Controller
 
         if (isset($data['title']) && $data['title'] !== $news->title) {
             $data['slug'] = SlugHelper::make($data['title']);
+        }
+
+        if (isset($data['content'])) {
+            $data['content'] = \App\Services\ContentSanitizer::clean($data['content']);
         }
 
         if ($request->hasFile('featured_image')) {

@@ -5,13 +5,13 @@ const AuthContext = createContext(null)
 
 export function AuthProvider ({ children }) {
   const [user, setUser] = useState(() => {
-    const saved = localStorage.getItem('auth_user')
+    const saved = sessionStorage.getItem('auth_user')
     return saved ? JSON.parse(saved) : null
   })
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    const token = localStorage.getItem('auth_token')
+    const token = sessionStorage.getItem('auth_token')
     if (!token) {
       setLoading(false)
       return
@@ -20,11 +20,11 @@ export function AuthProvider ({ children }) {
       .get('/me')
       .then(res => {
         setUser(res.data)
-        localStorage.setItem('auth_user', JSON.stringify(res.data))
+        sessionStorage.setItem('auth_user', JSON.stringify(res.data))
       })
       .catch(() => {
-        localStorage.removeItem('auth_token')
-        localStorage.removeItem('auth_user')
+        sessionStorage.removeItem('auth_token')
+        sessionStorage.removeItem('auth_user')
         setUser(null)
       })
       .finally(() => setLoading(false))
@@ -32,8 +32,8 @@ export function AuthProvider ({ children }) {
 
   const login = async (email, password) => {
     const res = await api.post('/login', { email, password })
-    localStorage.setItem('auth_token', res.data.token)
-    localStorage.setItem('auth_user', JSON.stringify(res.data.user))
+    sessionStorage.setItem('auth_token', res.data.token)
+    sessionStorage.setItem('auth_user', JSON.stringify(res.data.user))
     setUser(res.data.user)
     return res.data.user
   }
@@ -44,8 +44,8 @@ export function AuthProvider ({ children }) {
     } catch {
       // ignore — যেভাবেই হোক লোকাল স্টেট ক্লিয়ার করব
     }
-    localStorage.removeItem('auth_token')
-    localStorage.removeItem('auth_user')
+    sessionStorage.removeItem('auth_token')
+    sessionStorage.removeItem('auth_user')
     setUser(null)
   }
 

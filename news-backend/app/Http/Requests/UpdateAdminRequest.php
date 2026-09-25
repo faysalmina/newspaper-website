@@ -19,7 +19,7 @@ class UpdateAdminRequest extends FormRequest
         return [
             'name' => ['sometimes', 'required', 'string', 'max:255'],
             'email' => ['sometimes', 'required', 'email', Rule::unique('users', 'email')->ignore($adminId)],
-            'password' => ['nullable', 'string', 'min:8'],
+            'password' => ['nullable', \Illuminate\Validation\Rules\Password::min(8)->mixedCase()->numbers()],
             'phone' => ['nullable', 'string', 'max:20'],
         ];
     }
