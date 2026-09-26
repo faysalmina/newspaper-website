@@ -1,0 +1,12 @@
+{
+    "provider": "php",
+    "phpVersion": "8.3",
+    "phpExtensions": [
+        "gd",
+        "mbstring",
+        "pdo_mysql",
+        "bcmath",
+        "exif"
+    ],
+    "buildCommand": "composer install --optimize-autoloader --no-dev --no-scripts"
+}
