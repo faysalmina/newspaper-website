@@ -1,0 +1,11 @@
+{
+    "provider": "php",
+    "phpVersion": "8.3",
+    "phpExtensions": [
+        "gd",
+        "mbstring",
+        "pdo_mysql",
+        "bcmath",
+        "exif"
+    ]
+}
