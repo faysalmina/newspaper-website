@@ -13,4 +13,5 @@ COPY . .
 RUN composer install --optimize-autoloader --no-dev --no-interaction
 
 EXPOSE 8080
-CMD php artisan migrate --force && php artisan storage:link && php artisan serve --host 0.0.0.0 --port ${PORT:-8080}
+
+CMD ["sh", "-c", "php artisan migrate --force && php artisan storage:link && php artisan serve --host 0.0.0.0 --port ${PORT:-8080}"]
