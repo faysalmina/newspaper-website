@@ -18,6 +18,7 @@ class UpdateNewsRequest extends FormRequest
             'excerpt' => ['nullable', 'string', 'max:500'],
             'content' => ['sometimes', 'required', 'string'],
             'featured_image' => ['nullable', 'image', 'max:4096'],
+            'video_url' => ['nullable', 'string', 'max:500'],
             'category_id' => ['sometimes', 'required', 'exists:categories,id'],
             'status' => ['sometimes', 'required', 'in:draft,published,scheduled'],
             'published_at' => ['nullable', 'date'],

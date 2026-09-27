@@ -16,6 +16,7 @@ class ImageUploadService
         return ImageManager::usingDriver(Driver::class);
     }
 
+    // সাধারণ resize (অনুপাত ঠিক রেখে, শুধু প্রস্থ কমায়) — অ্যাড, ভিডিও থাম্বনেইল, ই-পেপার কভারের জন্য
     public static function processAndStore(UploadedFile $file, string $folder = 'news', int $maxWidth = 1200): string
     {
         $filename = Str::random(20) . '.jpg';
@@ -28,9 +29,24 @@ class ImageUploadService
         }
 
         $image->fillTransparentAreas('ffffff');
+        $encoded = $image->encodeUsingFormat(Format::JPEG, quality: 82);
 
-        // toJpeg() শর্টকাট এই ভার্সনে নেই — encodeUsingFormat() ব্যবহার করছি,
-        // এটাই সেই পদ্ধতি যা আগে WEBP এর ক্ষেত্রে সফলভাবে GD পর্যন্ত পৌঁছেছিল
+        Storage::disk('public')->put($relativePath, (string) $encoded);
+
+        return $relativePath;
+    }
+
+    // 🔑 নতুন — exact ডাইমেনশনে crop+resize করে (অনুপাত ভেঙে হলেও ফ্রেমটা পুরোপুরি ভরবে)
+    // নিউজের ফিচার্ড ইমেজের জন্য — সবসময় 1080x560 হবে, যেকোনো ইনপুট সাইজ/অনুপাত থেকেই
+    public static function processAndStoreCover(UploadedFile $file, string $folder, int $width, int $height): string
+    {
+        $filename = Str::random(20) . '.jpg';
+        $relativePath = "{$folder}/{$filename}";
+
+        $image = static::manager()->decodePath($file->getRealPath());
+        $image->cover($width, $height);
+        $image->fillTransparentAreas('ffffff');
+
         $encoded = $image->encodeUsingFormat(Format::JPEG, quality: 82);
 
         Storage::disk('public')->put($relativePath, (string) $encoded);

@@ -18,6 +18,7 @@ class StoreNewsRequest extends FormRequest
             'excerpt' => ['nullable', 'string', 'max:500'],
             'content' => ['required', 'string'],
             'featured_image' => ['nullable', 'image', 'max:10240'], // ১০MB পর্যন্ত, প্রসেসিং-এর পর অনেক ছোট হয়ে যাবে
+            'video_url' => ['nullable', 'string', 'max:500'],
             'category_id' => ['required', 'exists:categories,id'],
             'status' => ['required', 'in:draft,published,scheduled'],
             'published_at' => ['nullable', 'date'],

@@ -20,6 +20,7 @@ export default function NewsForm () {
     title: '',
     excerpt: '',
     content: '',
+    video_url: '',
     category_id: '',
     status: 'draft',
     is_breaking: false,
@@ -47,6 +48,7 @@ export default function NewsForm () {
           category_id: n.category_id,
           status: n.status,
           is_breaking: n.is_breaking,
+          video_url: n.video_url || '',
           is_featured: n.is_featured,
           meta_title: n.meta_title || '',
           meta_description: n.meta_description || '',
@@ -189,6 +191,18 @@ export default function NewsForm () {
             value={form.tags}
             onChange={handleChange}
             placeholder='যেমন: নির্বাচন, ঢাকা, ক্রিকেট'
+            className='w-full rounded border border-gray-300 px-3 py-2'
+          />
+        </div>
+        <div>
+          <label className='mb-1 block text-sm text-gray-700'>
+            ভিডিও লিংক (ঐচ্ছিক — YouTube URL দিলে নিউজ পেজে ভিডিও দেখাবে)
+          </label>
+          <input
+            name='video_url'
+            value={form.video_url}
+            onChange={handleChange}
+            placeholder='https://www.youtube.com/watch?v=...'
             className='w-full rounded border border-gray-300 px-3 py-2'
           />
         </div>

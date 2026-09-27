@@ -43,8 +43,8 @@ class NewsController extends Controller
             $data['published_at'] = now();
         }
 
-        if ($request->hasFile('featured_image')) {
-            $data['featured_image'] = ImageUploadService::processAndStore($request->file('featured_image'));
+                 if ($request->hasFile('featured_image')) {
+            $data['featured_image'] = ImageUploadService::processAndStoreCover($request->file('featured_image'), 'news', 1080, 560);
         }
 
         $tags = $data['tags'] ?? [];
@@ -82,9 +82,9 @@ class NewsController extends Controller
             $data['content'] = \App\Services\ContentSanitizer::clean($data['content']);
         }
 
-        if ($request->hasFile('featured_image')) {
+                if ($request->hasFile('featured_image')) {
             ImageUploadService::delete($news->featured_image);
-            $data['featured_image'] = ImageUploadService::processAndStore($request->file('featured_image'));
+            $data['featured_image'] = ImageUploadService::processAndStoreCover($request->file('featured_image'), 'news', 1080, 560);
         }
 
         if ((($data['status'] ?? $news->status) === 'published') && !$news->published_at) {

@@ -8,7 +8,7 @@ export default function NewsCard ({ news, size = 'medium' }) {
   if (size === 'large') {
     return (
       <Link href={href} className='group block'>
-        <div className='relative aspect-video overflow-hidden rounded-lg bg-gray-100'>
+        <div className='relative aspect-[1080/560] overflow-hidden rounded-lg bg-gray-100'>
           <Image
             src={imageUrl(news.featured_image)}
             alt={news.title}
@@ -30,7 +30,7 @@ export default function NewsCard ({ news, size = 'medium' }) {
 
   return (
     <Link href={href} className='group block'>
-      <div className='relative aspect-video overflow-hidden rounded bg-gray-100'>
+      <div className='relative aspect-[1080/560] overflow-hidden rounded bg-gray-100'>
         <Image
           src={imageUrl(news.featured_image)}
           alt={news.title}

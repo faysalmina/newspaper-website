@@ -93,8 +93,17 @@ export default async function SingleNewsPage ({ params }: Props) {
             <span>{news.views_count} বার পঠিত</span>
           </div>
 
-          {news.featured_image && (
-            <div className='relative mt-5 aspect-video overflow-hidden rounded bg-gray-100'>
+          {news.video_embed_url ? (
+            <div className='relative mt-5 aspect-[1080/560] overflow-hidden rounded bg-black'>
+              <iframe
+                src={news.video_embed_url}
+                className='absolute inset-0 h-full w-full'
+                allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
+                allowFullScreen
+              />
+            </div>
+          ) : news.featured_image ? (
+            <div className='relative mt-5 aspect-[1080/560] overflow-hidden rounded bg-gray-100'>
               <Image
                 src={imageUrl(news.featured_image)}
                 alt={news.title}
@@ -104,7 +113,7 @@ export default async function SingleNewsPage ({ params }: Props) {
                 unoptimized
               />
             </div>
-          )}
+          ) : null}
 
           <div
             className='prose prose-lg mt-6 max-w-none leading-relaxed'

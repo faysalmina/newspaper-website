@@ -190,6 +190,8 @@ class PublicNewsController extends Controller
             'excerpt' => $news->excerpt,
             'content' => $full ? $news->content : null,
             'featured_image' => $news->featured_image,
+            'video_url' => $news->video_url,
+            'video_embed_url' => $news->video_embed_url,
             'category_name' => $news->category?->name,
             'category_slug' => $news->category?->slug,
             'author_name' => $news->author?->name,
