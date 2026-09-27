@@ -6,7 +6,6 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Intervention\Image\Drivers\Gd\Driver;
-use Intervention\Image\Format;
 use Intervention\Image\ImageManager;
 
 class ImageUploadService
@@ -18,7 +17,7 @@ class ImageUploadService
 
     public static function processAndStore(UploadedFile $file, string $folder = 'news', int $maxWidth = 1200): string
     {
-        $filename = Str::random(20) . '.webp';
+        $filename = Str::random(20) . '.jpg';
         $relativePath = "{$folder}/{$filename}";
 
         $image = static::manager()->decodePath($file->getRealPath());
@@ -27,7 +26,8 @@ class ImageUploadService
             $image->scale(width: $maxWidth);
         }
 
-        $encoded = $image->encodeUsingFormat(Format::WEBP, quality: 80);
+        // WebP এর বদলে JPEG — GD-তে সবসময় built-in সাপোর্ট থাকে, কোনো এক্সট্রা কম্পাইল ফ্ল্যাগ লাগে না
+        $encoded = $image->toJpeg(quality: 82);
 
         Storage::disk('public')->put($relativePath, (string) $encoded);
 
