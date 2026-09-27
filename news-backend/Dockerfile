@@ -14,4 +14,4 @@ RUN composer install --optimize-autoloader --no-dev --no-interaction
 
 EXPOSE 8080
 
-CMD ["sh", "-c", "php artisan migrate --force && (php artisan storage:link || true) && php artisan serve --host 0.0.0.0 --port ${PORT:-8080}"]
+CMD ["sh", "-c", "echo '>>> Running migrate' && php artisan migrate --force && echo '>>> Migrate done, linking storage' && (php artisan storage:link || echo '>>> storage:link failed, continuing') && echo '>>> Starting server' && php artisan serve --host 0.0.0.0 --port ${PORT:-8080}"]
