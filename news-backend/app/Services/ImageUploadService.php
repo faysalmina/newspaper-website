@@ -5,7 +5,6 @@ namespace App\Services;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
-use Intervention\Image\Colors\Rgb\Color;
 use Intervention\Image\Drivers\Gd\Driver;
 use Intervention\Image\ImageManager;
 
@@ -28,12 +27,11 @@ class ImageUploadService
             $image->scale(width: $maxWidth);
         }
 
-        // PNG-এর মতো transparent ছবিকে সাদা ব্যাকগ্রাউন্ডে বসিয়ে দিচ্ছি,
-        // কারণ JPEG ফরম্যাট transparency সাপোর্ট করে না — এটা ছাড়া PNG এনকোড করতে গেলে এরর হতে পারে
-        $canvas = static::manager()->create($image->width(), $image->height())->fill('ffffff');
-        $canvas->place($image, 'top-left', 0, 0);
+        // PNG/GIF এর মতো transparent এলাকা থাকলে সাদা রঙে ভরে দিচ্ছে —
+        // এটা v4-এর নিজস্ব built-in মেথড, JPEG-এ transparency সাপোর্ট নেই বলে এটা দরকার
+        $image->fillTransparentAreas('ffffff');
 
-        $encoded = $canvas->toJpeg(quality: 82);
+        $encoded = $image->toJpeg(quality: 82);
 
         Storage::disk('public')->put($relativePath, (string) $encoded);
 
