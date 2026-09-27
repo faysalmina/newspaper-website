@@ -6,6 +6,7 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use Intervention\Image\Drivers\Gd\Driver;
+use Intervention\Image\Format;
 use Intervention\Image\ImageManager;
 
 class ImageUploadService
@@ -20,18 +21,17 @@ class ImageUploadService
         $filename = Str::random(20) . '.jpg';
         $relativePath = "{$folder}/{$filename}";
 
-        // যেকোনো ফরম্যাট (PNG, JPG, GIF, WebP, BMP...) স্বয়ংক্রিয়ভাবে detect করে decode করে
         $image = static::manager()->decodePath($file->getRealPath());
 
         if ($image->width() > $maxWidth) {
             $image->scale(width: $maxWidth);
         }
 
-        // PNG/GIF এর মতো transparent এলাকা থাকলে সাদা রঙে ভরে দিচ্ছে —
-        // এটা v4-এর নিজস্ব built-in মেথড, JPEG-এ transparency সাপোর্ট নেই বলে এটা দরকার
         $image->fillTransparentAreas('ffffff');
 
-        $encoded = $image->toJpeg(quality: 82);
+        // toJpeg() শর্টকাট এই ভার্সনে নেই — encodeUsingFormat() ব্যবহার করছি,
+        // এটাই সেই পদ্ধতি যা আগে WEBP এর ক্ষেত্রে সফলভাবে GD পর্যন্ত পৌঁছেছিল
+        $encoded = $image->encodeUsingFormat(Format::JPEG, quality: 82);
 
         Storage::disk('public')->put($relativePath, (string) $encoded);
 
