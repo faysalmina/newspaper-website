@@ -12,6 +12,9 @@ COPY . .
 
 RUN composer install --optimize-autoloader --no-dev --no-interaction
 
+COPY entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
+
 EXPOSE 8080
 
-CMD ["sh", "-c", "echo '>>> Running migrate' && php artisan migrate --force && echo '>>> Migrate done, linking storage' && (php artisan storage:link || echo '>>> storage:link failed, continuing') && echo '>>> Starting server' && php artisan serve --host 0.0.0.0 --port ${PORT:-8080}"]
+ENTRYPOINT ["/entrypoint.sh"]
