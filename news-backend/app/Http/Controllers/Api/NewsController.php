@@ -35,7 +35,7 @@ class NewsController extends Controller
         $this->authorize('create', News::class);
 
         $data = $request->validated();
-        $data['slug'] = SlugHelper::make($data['title']);
+        $data['slug'] = SlugHelper::unique($data['title'], News::class);
         $data['author_id'] = $request->user()->id;
         $data['content'] = \App\Services\ContentSanitizer::clean($data['content']);
 
@@ -73,7 +73,8 @@ class NewsController extends Controller
         $this->authorize('update', $news);
 
         $data = $request->validated();
-
+        $data['slug'] = SlugHelper::unique($data['title'], News::class, $news->id);
+        
         if (isset($data['title']) && $data['title'] !== $news->title) {
             $data['slug'] = SlugHelper::make($data['title']);
         }

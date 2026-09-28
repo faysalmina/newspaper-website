@@ -59,13 +59,13 @@ export default async function RootLayout ({
           rel='stylesheet'
         />
       </head>
-      <body>
+      <body className='flex min-h-screen flex-col'>
         <Header
           siteName={settings.site_name}
           tagline={settings.site_tagline}
           categories={categories}
         />
-        {children}
+        <div className='flex-1'>{children}</div>
         <Footer settings={settings} />
       </body>
     </html>
