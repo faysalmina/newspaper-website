@@ -7,6 +7,7 @@ import NewsCard from '../../../components/NewsCard'
 import { getNewsBySlug, imageUrl, formatDate } from '../../../lib/api'
 import AdSlot from '../../../components/AdSlot'
 import CommentSection from '../../../components/CommentSection'
+import NewsVideoPlayer from '../../../components/NewsVideoPlayer'
 
 type Props = { params: Promise<{ category: string; slug: string }> }
 
@@ -93,13 +94,12 @@ export default async function SingleNewsPage ({ params }: Props) {
             <span>{news.views_count} বার পঠিত</span>
           </div>
 
-          {news.video_embed_url ? (
+          {news.video_url ? (
             <div className='relative mt-5 aspect-[1080/560] overflow-hidden rounded bg-black'>
-              <iframe
-                src={news.video_embed_url}
-                className='absolute inset-0 h-full w-full'
-                allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
-                allowFullScreen
+              <NewsVideoPlayer
+                videoUrl={news.video_url}
+                videoType={news.video_type}
+                embedUrl={news.video_embed_url}
               />
             </div>
           ) : news.featured_image ? (
